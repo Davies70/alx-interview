@@ -9,6 +9,7 @@ You can assume n will be always an integer
 
 
 def pascal_triangle(n):
+    """ returns a list of lists of numbers"""
     if n <= 0:
         return []
     if n == 1:
