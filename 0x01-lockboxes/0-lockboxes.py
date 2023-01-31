@@ -11,6 +11,7 @@ def canUnlockAll(boxes):
         hash[index] = box
 
     keysafe = []
+    i = 0
 
     for box in boxes:
         for num in box:
@@ -21,7 +22,10 @@ def canUnlockAll(boxes):
             if key not in keysafe:
                 return False
             if key in boxes[key]:
-                keysafe.remove(key)
+                occurence = boxes[key].count(key)
+                while i < occurence:
+                    keysafe.remove(key)
+                    i += 1	
                 if key not in keysafe:
                     return False
     return True
