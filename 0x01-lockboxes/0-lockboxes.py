@@ -1,10 +1,8 @@
+#!/usr/bin/python3
 '''
 lockboxes module
 '''
-#!/usr/bin/python3
-import copy
 
-''' lockbox algorithm'''
 
 def canUnlockAll(boxes):
     ''' check if all boxes can be unlocked'''
