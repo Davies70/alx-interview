@@ -1,9 +1,13 @@
+'''
+lockboxes module
+'''
 #!/usr/bin/python3
 import copy
 
 ''' lockbox algorithm'''
 
 def canUnlockAll(boxes):
+    ''' check if all boxes can be unlocked'''
     if len(boxes) == 0:
         return False
     hash = {}
@@ -25,7 +29,7 @@ def canUnlockAll(boxes):
                 occurence = boxes[key].count(key)
                 while i < occurence:
                     keysafe.remove(key)
-                    i += 1	
+                    i += 1
                 if key not in keysafe:
                     return False
     return True
