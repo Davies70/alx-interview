@@ -9,6 +9,8 @@ def canUnlockAll(boxes):
     ''' check if all boxes can be unlocked'''
     if len(boxes) == 0:
         return False
+    if len(boxes) == 1:
+        return False
     hash = {}
     for index, box in enumerate(boxes):
         hash[index] = box
