@@ -1,11 +1,4 @@
 #!/usr/bin/python3
-
-'''
-lockboxes module
-'''
-
-
-#!/usr/bin/python3
 '''LockBoxes Challenge'''
 
 
