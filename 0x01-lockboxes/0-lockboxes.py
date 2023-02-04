@@ -14,7 +14,8 @@ def canUnlockAll(boxes):
     for keys in boxes[0]:
         keysafe.append(keys)
 
-    for key in keysafe:
+
+    for index, value in enumerate(boxes):
         for index, value in enumerate(boxes):
             if index in keysafe and index != 0:
                 keysafe = keysafe + value
