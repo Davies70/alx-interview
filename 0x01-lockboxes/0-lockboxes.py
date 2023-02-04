@@ -5,22 +5,35 @@ lockboxes module
 '''
 
 
+#!/usr/bin/python3
+'''LockBoxes Challenge'''
+
+
 def canUnlockAll(boxes):
-    ''' check if all boxes can be unlocked'''
-    if len(boxes) == 0:
-        return False
-    keysafe = []
+    '''determines if all the boxes can be opened or not
+    Returns:
+        True: all boxes can be opened
+        False: not all boxes can be opened
+    '''
+    length = len(boxes)
+    keys = set()
+    opened_boxes = []
+    i = 0
 
-    for keys in boxes[0]:
-        keysafe.append(keys)
+    while i < length:
+        oldi = i
+        opened_boxes.append(i)
+        keys.update(boxes[i])
+        for key in keys:
+            if key != 0 and key < length and key not in opened_boxes:
+                i = key
+                break
+        if oldi != i:
+            continue
+        else:
+            break
 
-    for index, value in enumerate(boxes):
-        for index, value in enumerate(boxes):
-            if index in keysafe and index != 0:
-                keysafe = keysafe + value
-
-    for i in range(1, len(boxes)):
-        if i not in keysafe:
+    for i in range(length):
+        if i not in opened_boxes and i != 0:
             return False
-
     return True
