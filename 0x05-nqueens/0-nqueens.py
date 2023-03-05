@@ -1,91 +1,140 @@
 #!/usr/bin/python3
-'''N Queens Challenge'''
-
+'''Shows possible arrangements of n-queens on a chess board'''
 import sys
 
 
-if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print("Usage: nqueens N")
-        sys.exit(1)
+class mylist (list):
+    '''Overwrites default list to prevent negative indexing'''
+    def __getitem__(self, n):
+        if n < 0:
+            raise IndexError("...")
+        return list.__getitem__(self, n)
 
-    try:
-        n = int(sys.argv[1])
-    except ValueError:
-        print('N must be a number')
-        exit(1)
 
-    if n < 4:
-        print('N must be at least 4')
-        exit(1)
+n = 0
+grid = mylist()
+out_list = set()
+out_list_set = set()
 
-    solutions = []
-    placed_queens = []  # coordinates format [row, column]
-    stop = False
-    r = 0
-    c = 0
 
-    # iterate thru rows
-    while r < n:
-        goback = False
-        # iterate thru columns
-        while c < n:
-            # check is current column is safe
-            safe = True
-            for cord in placed_queens:
-                col = cord[1]
-                if(col == c or col + (r-cord[0]) == c or
-                        col - (r-cord[0]) == c):
-                    safe = False
-                    break
+def fill_grid(n):
+    '''Creates an n x n grid'''
+    global grid
+    for y in range(n):
+        grid.append(mylist())
+        for x in range(n):
+            grid[y].append(0)
 
-            if not safe:
-                if c == n - 1:
-                    goback = True
-                    break
-                c += 1
+
+def compile_matrix_output():
+    '''Prints out the positions of the queens'''
+    global out_list
+    out_list = set()
+    for y in range(n):
+        for x in range(n):
+            if grid[y][x]:
+                out_list.add((y, x))
+
+
+def possible(y, x):
+    '''Checks if a queen can be placed in this position'''
+    # Checks if there's a queen in the row
+    for i in range(n):
+        if grid[y][i]:
+            return False
+    # Checks if there's a queen in the column
+    for i in range(n):
+        if grid[i][x]:
+            return False
+    # Checks if there's a queen in the diagonal
+    for i in range(n):
+        try:
+            if grid[y - i][x - i]:
+                return False
+        except IndexError:
+            pass
+        try:
+            if grid[y - i][x + i]:
+                return False
+        except IndexError:
+            pass
+        try:
+            if grid[y + i][x - i]:
+                return False
+        except IndexError:
+            pass
+        try:
+            if grid[y + i][x + i]:
+                return False
+        except IndexError:
+            pass
+    return True
+
+
+def count_n():
+    count = 0
+    for i in grid:
+        for j in i:
+            if j:
+                count += 1
+    return count
+
+
+def solve():
+    '''Solves for each position in the board'''
+    global grid, out_list, out_list_set
+    if count_n() == n:
+        compile_matrix_output()
+        out_list_set.add(tuple(out_list))
+        out_list = set()
+    for y in range(n):
+        for x in range(n):
+            if not grid[y][x]:
+                if possible(y, x):
+                    grid[y][x] = 1
+                    solve()
+                    grid[y][x] = 0
                 continue
 
-            # place queen
-            cords = [r, c]
-            placed_queens.append(cords)
-            # if last row, append solution and reset all to last unfinished row
-            # and last safe column in that row
-            if r == n - 1:
-                solutions.append(placed_queens[:])
-                for cord in placed_queens:
-                    if cord[1] < n - 1:
-                        r = cord[0]
-                        c = cord[1]
-                for i in range(n - r):
-                    placed_queens.pop()
-                if r == n - 1 and c == n - 1:
-                    placed_queens = []
-                    stop = True
-                r -= 1
-                c += 1
-            else:
-                c = 0
-            break
-        if stop:
-            break
-        # on fail: go back to previous row
-        # and continue from last safe column + 1
-        if goback:
-            r -= 1
-            while r >= 0:
-                c = placed_queens[r][1] + 1
-                del placed_queens[r]  # delete previous queen coordinates
-                if c < n:
-                    break
-                r -= 1
-            if r < 0:
-                break
-            continue
-        r += 1
 
-    for idx, val in enumerate(solutions):
-        if idx == len(solutions) - 1:
-            print(val, end='')
-        else:
-            print(val)
+def print_output():
+    '''Prints out the output of the program'''
+    out_list_list = []
+    for i in range(len(out_list_set)):
+        out_list_list.append([])
+
+    idx = 0
+    for outlist in out_list_set:
+        for pair in outlist:
+            y, x = pair
+            out_list_list[idx].append([y, x])
+        idx += 1
+
+    new_out_list_list = []
+    for i in out_list_list:
+        new_out_list_list.append(sorted(i, key=lambda x: x[0]))
+    for i in new_out_list_list:
+        print(i)
+
+
+# Main Code here:
+if len(sys.argv) != 2:
+    print('Usage: nqueens N')
+    sys.exit(1)
+
+try:
+    n = int(sys.argv[1])
+    if type(n) != int:
+        print('N must be a number')
+        sys.exit(1)
+except Exception:
+    print('N must be a number')
+    sys.exit(1)
+
+if n < 4:
+    print('N must be at least 4')
+    sys.exit(1)
+
+fill_grid(n)
+solve()
+print_output()
