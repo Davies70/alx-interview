@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-'''Shows possible arrangements of n-queens on a chess board'''
+'''Shows possible arrangements of N-queens on a chess board'''
 import sys
 
 
