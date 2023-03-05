@@ -2,139 +2,51 @@
 '''Shows possible arrangements of N-queens on a chess board'''
 import sys
 
-
-class mylist (list):
-    '''Overwrites default list to prevent negative indexing'''
-    def __getitem__(self, n):
-        if n < 0:
-            raise IndexError("...")
-        return list.__getitem__(self, n)
-
-
-n = 0
-grid = mylist()
-out_list = set()
-out_list_set = set()
-
-
-def fill_grid(n):
-    '''Creates an n x n grid'''
-    global grid
-    for y in range(n):
-        grid.append(mylist())
-        for x in range(n):
-            grid[y].append(0)
-
-
-def compile_matrix_output():
-    '''Prints out the positions of the queens'''
-    global out_list
-    out_list = set()
-    for y in range(n):
-        for x in range(n):
-            if grid[y][x]:
-                out_list.add((y, x))
-
-
-def possible(y, x):
-    '''Checks if a queen can be placed in this position'''
-    # Checks if there's a queen in the row
-    for i in range(n):
-        if grid[y][i]:
+def is_valid(board, row, col):
+    for i in range(col):
+        if board[row][i] == 1:
             return False
-    # Checks if there's a queen in the column
-    for i in range(n):
-        if grid[i][x]:
+    for i, j in zip(range(row, -1, -1), range(col, -1, -1)):
+        if board[i][j] == 1:
             return False
-    # Checks if there's a queen in the diagonal
-    for i in range(n):
-        try:
-            if grid[y - i][x - i]:
-                return False
-        except IndexError:
-            pass
-        try:
-            if grid[y - i][x + i]:
-                return False
-        except IndexError:
-            pass
-        try:
-            if grid[y + i][x - i]:
-                return False
-        except IndexError:
-            pass
-        try:
-            if grid[y + i][x + i]:
-                return False
-        except IndexError:
-            pass
+    for i, j in zip(range(row, len(board)), range(col, -1, -1)):
+        if board[i][j] == 1:
+            return False
     return True
 
+def solve_n_queens(board, col):
+    if col == len(board):
+        for row in range(len(board)):
+            solution = []
+            for col in range(len(board)):
+                if board[row][col] == 1:
+                    solution.append([row, col])
+            print(solution)
+        return True
 
-def count_n():
-    count = 0
-    for i in grid:
-        for j in i:
-            if j:
-                count += 1
-    return count
+    found_solution = False
+    for row in range(len(board)):
+        if is_valid(board, row, col):
+            board[row][col] = 1
+            found_solution = solve_n_queens(board, col + 1) or found_solution
+            board[row][col] = 0
 
+    return found_solution
 
-def solve():
-    '''Solves for each position in the board'''
-    global grid, out_list, out_list_set
-    if count_n() == n:
-        compile_matrix_output()
-        out_list_set.add(tuple(out_list))
-        out_list = set()
-    for y in range(n):
-        for x in range(n):
-            if not grid[y][x]:
-                if possible(y, x):
-                    grid[y][x] = 1
-                    solve()
-                    grid[y][x] = 0
-                continue
-
-
-def print_output():
-    '''Prints out the output of the program'''
-    out_list_list = []
-    for i in range(len(out_list_set)):
-        out_list_list.append([])
-
-    idx = 0
-    for outlist in out_list_set:
-        for pair in outlist:
-            y, x = pair
-            out_list_list[idx].append([y, x])
-        idx += 1
-
-    new_out_list_list = []
-    for i in out_list_list:
-        new_out_list_list.append(sorted(i, key=lambda x: x[0]))
-    for i in new_out_list_list:
-        print(i)
-
-
-# Main Code here:
-if len(sys.argv) != 2:
-    print('Usage: nqueens N')
-    sys.exit(1)
-
-try:
-    n = int(sys.argv[1])
-    if type(n) != int:
-        print('N must be a number')
+if __name__ == '__main__':
+    if len(sys.argv) != 2:
+        print("Usage: nqueens N")
         sys.exit(1)
-except Exception:
-    print('N must be a number')
-    sys.exit(1)
 
-if n < 4:
-    print('N must be at least 4')
-    sys.exit(1)
+    try:
+        N = int(sys.argv[1])
+    except ValueError:
+        print("N must be a number")
+        sys.exit(1)
 
-fill_grid(n)
-solve()
-print_output()
+    if N < 4:
+        print("N must be at least 4")
+        sys.exit(1)
+
+    board = [[0 for _ in range(N)] for _ in range(N)]
+    solve_n_queens(board, 0)
