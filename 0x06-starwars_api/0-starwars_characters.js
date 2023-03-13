@@ -1,13 +1,13 @@
 #!/usr/bin/node
 
-const request = require("request");
+const request = require('request');
 const number = process.argv[2];
 const api = `https://swapi-api.alx-tools.com/api/films/${number}`;
 
 const getFilmBody = () => {
   return new Promise((resolve, reject) => {
     request(api, { json: true }, (error, response, body) => {
-      if (!error && response.statusCode == 200) {
+      if (!error && response.statusCode === 200) {
         resolve(body.characters);
       } else {
         reject(error);
@@ -19,7 +19,7 @@ const getFilmBody = () => {
 const getCharacterNames = (nameAPI) => {
   return new Promise((resolve, reject) => {
     request(nameAPI, { json: true }, (error, response, body) => {
-      if (!error && response.statusCode == 200) {
+      if (!error && response.statusCode === 200) {
         resolve(body.name);
       } else {
         reject(error);
