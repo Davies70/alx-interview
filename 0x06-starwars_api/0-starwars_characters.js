@@ -37,9 +37,7 @@ getFilmBody()
     Promise.all(promises)
       .then((names) => {
         for (const name of names) {
-          if (name === names[names.length - 1]) {
-            process.stdout.write(name);
-          } else process.stdout.write(name + '\n');
+          process.stdout.write(name + '\n');
         }
       })
       .catch((error) => console.error(error));
