@@ -36,7 +36,11 @@ getFilmBody()
 
     Promise.all(promises)
       .then((names) => {
-        names.map((actorName) => console.log(actorName));
+        for (const name of names) {
+          if (name === names[names.length - 1]) {
+            process.stdout.write(name);
+          } else process.stdout.write(name + '\n');
+        }
       })
       .catch((error) => console.error(error));
   })
