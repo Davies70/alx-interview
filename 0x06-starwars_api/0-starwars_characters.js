@@ -28,14 +28,16 @@ const getCharacterNames = (nameAPI) => {
   });
 };
 
-getFilmBody().then((characters) => {
-  const promises = characters.map((character) => {
-    return getCharacterNames(character);
-  });
+getFilmBody()
+  .then((characters) => {
+    const promises = characters.map((character) => {
+      return getCharacterNames(character);
+    });
 
-  Promise.all(promises)
-    .then((names) => {
-      names.map((actorName) => console.log(actorName));
-    })
-    .catch((error) => console.error(error));
-});
+    Promise.all(promises)
+      .then((names) => {
+        names.map((actorName) => console.log(actorName));
+      })
+      .catch((error) => console.error(error));
+  })
+  .catch((error) => console.log(error));
