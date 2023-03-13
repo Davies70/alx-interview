@@ -1,8 +1,8 @@
-#!/usr/bin/node
+#!/usr/bin/env node
 
 const request = require('request');
-const number = process.argv[2];
-const api = `https://swapi-api.alx-tools.com/api/films/${number}`;
+const movieID = process.argv[2];
+const api = `https://swapi-api.alx-tools.com/api/films/${movieID}`;
 
 const getFilmBody = () => {
   return new Promise((resolve, reject) => {
