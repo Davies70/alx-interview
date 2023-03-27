@@ -24,29 +24,26 @@
 # Given a pile of coins of different values,
 # determine the fewest number of coins needed to
 # meet a given amount total
+
+""" Contains makeChange function"""
+
+
 def makeChange(coins, total):
     """
-    Returns the fewest number of coins needed to meet a given amount total
+    Returns: fewest number of coins needed to meet total
+        If total is 0 or less, return 0
+        If total cannot be met by any number of coins you have, return -1
     """
-    # create the 'array of ways'
-    matrix = [total + 1] * (total + 1)
-    matrix[0] = 0
-
-    # for each step of the matrix, l -> r
-    for n in range(1, total + 1):
-        # look at each coin in matrix
-        for coin in coins:
-            # if n (index of matrix) minus coin is greater than 0
-            if n - coin >= 0:
-                # Then we must be able to remove a coin
-                # Thus making the count of coins necessary less
-                # we'll check the min to set the new lower value
-                matrix[n] = min(matrix[n], 1 + matrix[n - coin])
-
-    return matrix[total] if matrix[total] < total + 1 else -1
-
-
-if __name__ == "__main__":
-    print(makeChange([1, 2, 25], 37))
-
-    print(makeChange([1256, 54, 48, 16, 102], 1453))
+    if not coins or coins is None:
+        return -1
+    if total <= 0:
+        return 0
+    change = 0
+    coins = sorted(coins)[::-1]
+    for coin in coins:
+        while coin <= total:
+            total -= coin
+            change += 1
+        if (total == 0):
+            return change
+    return -1
