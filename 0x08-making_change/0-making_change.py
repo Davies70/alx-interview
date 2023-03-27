@@ -2,18 +2,51 @@
 """ Change comes from within"""
 
 
+# def makeChange(coins, total):
+#     """Given a pile of coins of different values,
+#           determine the fewest number of coins needed to \
+#          meet a given amount total."""
+#     if total <= 0:
+#         return 0
+
+#     dp = [float('inf')] * (total + 1)
+#     dp[0] = 0
+
+#     for coin in coins:
+#         for i in range(coin, total + 1):
+#             dp[i] = min(dp[i], dp[i - coin] + 1)
+
+#     return dp[total] if dp[total] != float('inf') else -1
+
+""" 0. Change comes from within """
+
+
+# Given a pile of coins of different values,
+# determine the fewest number of coins needed to
+# meet a given amount total
 def makeChange(coins, total):
-    """Given a pile of coins of different values,
-          determine the fewest number of coins needed to \
-         meet a given amount total."""
-    if total <= 0:
-        return 0
+    """
+    Returns the fewest number of coins needed to meet a given amount total
+    """
+    # create the 'array of ways'
+    matrix = [total + 1] * (total + 1)
+    matrix[0] = 0
 
-    dp = [float('inf')] * (total + 1)
-    dp[0] = 0
+    # for each step of the matrix, l -> r
+    for n in range(1, total + 1):
+        # look at each coin in matrix
+        for coin in coins:
+            # if n (index of matrix) minus coin is greater than 0
+            if n - coin >= 0:
+                # Then we must be able to remove a coin
+                # Thus making the count of coins necessary less
+                # we'll check the min to set the new lower value
+                matrix[n] = min(matrix[n], 1 + matrix[n - coin])
 
-    for coin in coins:
-        for i in range(coin, total + 1):
-            dp[i] = min(dp[i], dp[i - coin] + 1)
+    return matrix[total] if matrix[total] < total + 1 else -1
 
-    return dp[total] if dp[total] != float('inf') else -1
+
+if __name__ == "__main__":
+    print(makeChange([1, 2, 25], 37))
+
+    print(makeChange([1256, 54, 48, 16, 102], 1453))
