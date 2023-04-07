@@ -55,6 +55,7 @@ def is_prime(n):
 
 
 def deep_copy_list(original_list):
+    """makes a deep copy of list"""
     copy_list = []
     for item in original_list:
         if isinstance(item, list):
@@ -66,4 +67,5 @@ def deep_copy_list(original_list):
 
 
 def is_even(number):
+    """ checks for even number"""
     return number % 2 == 0
