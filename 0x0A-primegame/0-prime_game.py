@@ -4,7 +4,7 @@
 
 def isWinner(x, nums):
     """ a function that returns the winner"""
-    if len(nums) < x or x == 0:
+    if len(nums) < x or x == 0 or len(nums) == 0:
         return None
 
     nums = nums[:x]
