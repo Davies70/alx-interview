@@ -23,7 +23,7 @@ def isWinner(x, nums):
                 continue
             elif is_prime(i):
                 for j in spread:
-                    if j % i == 0:
+                    if j % i == 0 and j in buffer[round]:
                         buffer[round].remove(j)
                         checker = i
                 player += 1
