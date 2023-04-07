@@ -1,4 +1,4 @@
-import m
+import random
 
 isWinner = __import__('0-prime_game').isWinner
 
@@ -29,4 +29,20 @@ print(isWinner(x, nums))
 # Test case 5
 x = 1
 nums = [5]
+print(isWinner(x, nums))
+
+#test case6
+
+nums = [random.randint(1, 10000) for i in range(100)]
+x = 100
+
+print(isWinner(x, nums))
+
+#test case7
+
+print('.......')
+
+nums = [random.randint(1, 10000) for i in range(10000)]
+x = 10000
+
 print(isWinner(x, nums))

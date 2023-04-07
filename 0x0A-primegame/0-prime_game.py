@@ -3,35 +3,33 @@
 
 
 def isWinner(x, nums):
-    """ a function that returns the winner"""
+    ''' winner of prime game'''
     if len(nums) < x or x < 1 or len(nums) == 0:
         return None
 
+    max_num = max(nums)
+    primes = get_primes(max_num)
+
     spread_nums = [[i for i in range(1, j+1)] for j in nums]
-    buffer = deep_copy_list(spread_nums)
-    round = 0
+    buffer = [set(s) for s in spread_nums]
     ben = 0
     maria = 0
     player = 0
 
-    for spread in spread_nums:
-        checker = 0
+    for i in range(len(spread_nums)):
         player = 0
-        for i in spread:
-            if i == checker:
-                continue
-            elif is_prime(i):
-                for j in spread:
-                    if j % i == 0 and j in buffer[round]:
-                        buffer[round].remove(j)
-                        checker = i
-                player += 1
-        if buffer[round] == [1]:
-            if is_even(player):
+        for prime in primes:
+            if prime > spread_nums[i][-1]:
+                break
+            for j in spread_nums[i]:
+                if j % prime == 0 and j in buffer[i]:
+                    buffer[i].remove(j)
+                    player += 1
+        if len(buffer[i]) == 1 and 1 in buffer[i]:
+            if player % 2 == 0:
                 ben += 1
             else:
                 maria += 1
-        round += 1
 
     if ben > maria:
         return "Ben"
@@ -41,30 +39,15 @@ def isWinner(x, nums):
         return None
 
 
-def is_prime(n):
-    """
-    Returns True if the input number n is prime, False otherwise.
-    """
-    if n < 2:
-        return False
-    for i in range(2, int(n**0.5) + 1):
-        if n % i == 0:
-            return False
-    return True
-
-
-def deep_copy_list(original_list):
-    """makes a deep copy of list"""
-    copy_list = []
-    for item in original_list:
-        if isinstance(item, list):
-            item_copy = deep_copy_list(item)
-            copy_list.append(item_copy)
-        else:
-            copy_list.append(item)
-    return copy_list
-
-
-def is_even(number):
-    """ checks for even number"""
-    return number % 2 == 0
+def get_primes(n):
+    """Returns a set of primes up to n."""
+    primes = set([2])
+    for i in range(3, n+1):
+        is_prime = True
+        for j in range(2, int(i**0.5)+1):
+            if i % j == 0:
+                is_prime = False
+                break
+        if is_prime:
+            primes.add(i)
+    return primes
