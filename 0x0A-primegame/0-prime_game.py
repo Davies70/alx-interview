@@ -7,7 +7,6 @@ def isWinner(x, nums):
     if len(nums) < x or x == 0 or len(nums) == 0:
         return None
 
-    nums = nums[:x]
     spread_nums = [[i for i in range(1, j+1)] for j in nums]
     buffer = deep_copy_list(spread_nums)
     round = 0
