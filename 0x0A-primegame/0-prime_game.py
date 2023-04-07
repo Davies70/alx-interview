@@ -27,11 +27,11 @@ def isWinner(x, nums):
                         buffer[round].remove(j)
                         checker = i
                 player += 1
-            if buffer[round] == [1]:
-                if is_even(player):
-                    ben += 1
-                else:
-                    maria += 1
+        if buffer[round] == [1]:
+            if is_even(player):
+                ben += 1
+            else:
+                maria += 1
         round += 1
 
     if ben > maria:
@@ -47,7 +47,7 @@ def is_prime(n):
     Returns True if the input number n is prime, False otherwise.
     """
     if n < 2:
-        return False
+        return False # 0 and 1 are not primes
     for i in range(2, int(n**0.5) + 1):
         if n % i == 0:
             return False
