@@ -4,6 +4,9 @@
 
 def isWinner(x, nums):
     """ a function that returns the winner"""
+    if len(nums) < x:
+        return None
+
     nums = nums[:x]
     spread_nums = [[i for i in range(1, j+1)] for j in nums]
     buffer = deep_copy_list(spread_nums)
